@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1912" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="MUK-gO-zVU">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F2109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="NmA-s9-h01">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
@@ -27,7 +27,7 @@
                                 <rect key="frame" x="213" y="285" width="175" height="30"/>
                                 <state key="normal" title="Record New Audio Profile"/>
                                 <connections>
-                                    <segue destination="omL-rm-oAY" kind="show" id="JLw-V9-ial"/>
+                                    <segue destination="omL-rm-oAY" kind="show" id="kiQ-Pu-9jr"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QIl-21-ZxJ">
@@ -54,7 +54,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8L1-my-Re3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1879" y="-120"/>
+            <point key="canvasLocation" x="-35" y="-39"/>
         </scene>
         <!--Chatter Detector View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -69,7 +69,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="2d4-33-1yn">
-                                <rect key="frame" x="20" y="215" width="157" height="29"/>
+                                <rect key="frame" x="20" y="259" width="157" height="29"/>
                                 <segments>
                                     <segment title="Waveform"/>
                                     <segment title="Frequency"/>
@@ -79,13 +79,13 @@
                                 </connections>
                             </segmentedControl>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Profile Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHY-Jm-pWD">
-                                <rect key="frame" x="20" y="28" width="560" height="21"/>
+                                <rect key="frame" x="20" y="72" width="560" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" horizontalHuggingPriority="200" translatesAutoresizingMaskIntoConstraints="NO" id="J4D-YZ-j5A" customClass="GraphView" customModule="ChatterApp" customModuleProvider="target">
-                                <rect key="frame" x="20" y="57" width="560" height="150"/>
+                                <rect key="frame" x="20" y="101" width="560" height="150"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="J4D-YZ-j5A" secondAttribute="height" multiplier="14:5" id="dAW-cX-sQC"/>
@@ -101,7 +101,7 @@
                                         <real key="value" value="10"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="axes_color">
-                                        <color key="value" red="1" green="0.020100812986999284" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <variation key="default">
@@ -111,7 +111,7 @@
                                 </variation>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Audio Filters" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UBx-wj-oPg">
-                                <rect key="frame" x="20" y="251" width="95" height="21"/>
+                                <rect key="frame" x="20" y="295" width="95" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -155,13 +155,13 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LRb-rX-wgz">
                                 <rect key="frame" x="178" y="409" width="361" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="l39-vY-gzZ">
                                 <rect key="frame" x="178" y="447" width="361" height="30"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Fvw-Xd-CGU">
                                 <rect key="frame" x="178" y="485" width="361" height="30"/>
@@ -171,7 +171,7 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Rt-fE-dvg">
                                 <rect key="frame" x="178" y="524" width="361" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Spindle Speed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PqQ-wm-Qf3">
                                 <rect key="frame" x="20" y="529" width="150" height="21"/>
@@ -193,7 +193,7 @@
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="nZj-uG-Abd">
-                                <rect key="frame" x="20" y="280" width="560" height="92"/>
+                                <rect key="frame" x="20" y="324" width="560" height="48"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="nZj-uG-Abd" secondAttribute="height" multiplier="28:5" id="aQ5-xR-iFh"/>
@@ -277,6 +277,13 @@
                             </mask>
                         </variation>
                     </view>
+                    <navigationItem key="navigationItem" id="lHQ-Yi-aqV">
+                        <barButtonItem key="rightBarButtonItem" title="Main Menu" id="qXM-gi-pNj">
+                            <connections>
+                                <segue destination="NmA-s9-h01" kind="show" id="jHk-Eg-EwO"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="AudioPlots" destination="J4D-YZ-j5A" id="B17-u6-PJP"/>
                         <outlet property="calculateButton" destination="qy9-pq-y8T" id="AjD-yl-d2c"/>
@@ -284,12 +291,13 @@
                         <outlet property="newSpindleSpeedTextField" destination="5Rt-fE-dvg" id="tIK-tS-iP9"/>
                         <outlet property="numberOfFlutesTextField" destination="Fvw-Xd-CGU" id="S1e-Gz-dNn"/>
                         <outlet property="plotChangeToggle" destination="2d4-33-1yn" id="9J4-cX-98p"/>
+                        <outlet property="profileNameLabel" destination="lHY-Jm-pWD" id="Hbm-sm-0LW"/>
                         <outlet property="spindleSpeedTextField" destination="LRb-rX-wgz" id="siI-Fb-ifD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-125" y="-919"/>
+            <point key="canvasLocation" x="749" y="-847"/>
         </scene>
         <!--Audio Recorder View Controller-->
         <scene sceneID="0Pg-57-veT">
@@ -304,25 +312,25 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h8e-vs-jNM">
-                                <rect key="frame" x="498" y="195" width="82" height="17"/>
+                                <rect key="frame" x="498" y="239" width="82" height="17"/>
                                 <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WNv-ny-yli">
-                                <rect key="frame" x="546" y="233" width="34" height="30"/>
+                                <rect key="frame" x="546" y="277" width="34" height="30"/>
                                 <state key="normal" title="Save"/>
                                 <connections>
                                     <action selector="save:" destination="omL-rm-oAY" eventType="touchUpInside" id="vbk-I6-y5n"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Profile Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lPV-r1-gK8">
-                                <rect key="frame" x="20" y="233" width="518" height="30"/>
+                                <rect key="frame" x="20" y="277" width="518" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mbe-Hy-VHj">
-                                <rect key="frame" x="303" y="195" width="49" height="30"/>
+                                <rect key="frame" x="303" y="239" width="49" height="30"/>
                                 <state key="normal" title="Record">
                                     <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -331,17 +339,17 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CqP-yO-F6h">
-                                <rect key="frame" x="248" y="195" width="30" height="30"/>
+                                <rect key="frame" x="248" y="239" width="30" height="30"/>
                                 <state key="normal" title="Play"/>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="27n-WS-ceJ">
-                                <rect key="frame" x="20" y="195" width="220" height="30"/>
+                                <rect key="frame" x="20" y="239" width="220" height="30"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jCP-cx-NLc">
-                                <rect key="frame" x="360" y="195" width="220" height="30"/>
+                                <rect key="frame" x="360" y="239" width="220" height="30"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZoH-BE-aNr" customClass="GraphView" customModule="ChatterApp" customModuleProvider="target">
-                                <rect key="frame" x="20" y="28" width="560" height="159"/>
+                                <rect key="frame" x="20" y="72" width="560" height="159"/>
                                 <color key="backgroundColor" red="0.92065183080000002" green="0.92065183080000002" blue="0.92065183080000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ZoH-BE-aNr" secondAttribute="height" multiplier="560:159" id="byf-w5-94Q"/>
@@ -390,12 +398,48 @@
                         <outlet property="recordButton" destination="Mbe-Hy-VHj" id="o3J-CQ-ngV"/>
                         <outlet property="saveButton" destination="WNv-ny-yli" id="5Th-yn-aW8"/>
                         <outlet property="timecode" destination="h8e-vs-jNM" id="c7I-ps-Qia"/>
-                        <segue destination="BYZ-38-t0r" kind="show" identifier="ShowChatterDetector" id="jzg-rn-P1y"/>
+                        <segue destination="vIv-XF-dR0" kind="show" identifier="ShowChatterDetector" id="jzg-rn-P1y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zfr-we-uVq" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-859" y="-919"/>
+            <point key="canvasLocation" x="-797" y="-847"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="eO0-T5-F80">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="vIv-XF-dR0" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="oSs-ol-P2J">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="9ez-zP-MID"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Ny-8C-T3r" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-63" y="-847"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="JzP-Yv-GlK">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="NmA-s9-h01" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="aNO-mh-R1h">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="MUK-gO-zVU" kind="relationship" relationship="rootViewController" id="UxN-SZ-aim"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GnF-G2-xfc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-797" y="-39"/>
         </scene>
     </scenes>
 </document>

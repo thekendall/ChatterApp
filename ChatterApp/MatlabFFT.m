@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "MatlabFFT.h"
 
+
+//Uses the Accelerate DSP_FFT_ZRIP
 DSPSplitComplex fft(NSArray *dataInput, const int log2n){
     const int n = 1 << log2n;
     const int nOver2 = n/2;

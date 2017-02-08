@@ -30,13 +30,7 @@ class ChatterDetector{
     init() {
         
     }
-    
-    // Load sample data from a buffer.
-//    init() {
-//        
-//    }
 
-    
     func loadDataFromAudioFile(audioFile:AVAudioFile)
     {
         audioSampleData = extractAudioSampleData(audioFile);
@@ -132,17 +126,15 @@ class ChatterDetector{
             chatterFrequency = maxAmpFreq;
             var newSpeed = chatterFrequency! * 60.0 / Float(numberOfFlutes);
             count = 1;
-            while newSpeed * Float(count) < Float(maxSpindleSpeed)
-            {
-                newSpeed *= Float(count);
-                count++;
-            }
-            count = 1;
-            while newSpeed / Float(count) > Float(maxSpindleSpeed) && !(newSpeed * Float(count) < Float(maxSpindleSpeed))
+            print("newspeed \(newSpeed * Float(count))")
+            print("maxSpeed \(maxSpindleSpeed)")
+
+            while (newSpeed) > Float(maxSpindleSpeed)
             {
                 newSpeed /= Float(count);
                 count++;
             }
+            count = 1;
             adjustedSpindleSpeed = newSpeed;
         }
         print(adjustedSpindleSpeed)

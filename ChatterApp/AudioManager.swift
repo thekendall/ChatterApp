@@ -138,7 +138,7 @@ class AudioManager: NSObject, AVAudioRecorderDelegate {
         do {
             let newPath = getDocumentsDirectory().stringByAppendingString("/\(filename).aiff")
             try NSFileManager.defaultManager().moveItemAtPath(audioFilePathString!, toPath: newPath)
-            print("Made it here!")
+            print("\(newPath)")
             return newPath;
         } catch let error as NSError {
             print(error)

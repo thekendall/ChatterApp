@@ -11,4 +11,9 @@ class MainMenuViewController: UIViewController {
     @IBOutlet weak var loadAudioProfileButton: UIButton!
     @IBOutlet weak var recordNewAudioProfileButton: UIButton!
     @IBOutlet weak var aboutButton: UIButton!
+    
+    
+    override func viewDidLoad() {
+        self.title = "Main Menu"
+    }
 }

@@ -100,6 +100,7 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "Recorder"
         audioManager.delegate = self;
         checkActivateSave()
         profileNameTextbox.addTarget(self, action: Selector("profileNameDidEdit") , forControlEvents: UIControlEvents.EditingChanged)
@@ -115,7 +116,7 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "ShowChatterDetector"
         {
-            if let destinationVC = segue.destinationViewController as? ChatterDetectorViewController {
+            if let destinationVC = (segue.destinationViewController as? UINavigationController)?.topViewController as? ChatterDetectorViewController {
                 destinationVC.audioFilePath = audioFilePath;
                 destinationVC.profileName = profileName;
                 print("\(audioFilePath)")
@@ -126,7 +127,6 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate {
     
     func profileNameDidEdit()
     {
-        print("Did Edit")
         checkActivateSave()
     }
     
