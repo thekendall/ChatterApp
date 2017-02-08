@@ -90,7 +90,6 @@
 		1A505E8B1DC1A9A6003A1D3B /* Misc */ = {
 			isa = PBXGroup;
 			children = (
-				1A31670A1D755261002B1371 /* GraphView.swift */,
 			);
 			name = Misc;
 			sourceTree = "<group>";
@@ -119,6 +118,7 @@
 				1A505E8B1DC1A9A6003A1D3B /* Misc */,
 				1A505E8A1DC1A98A003A1D3B /* FFT Stuff */,
 				EB47CFAE1CACD29700BA218E /* Main.storyboard */,
+				1A31670A1D755261002B1371 /* GraphView.swift */,
 				1A505E881DC1A7CA003A1D3B /* ChatterDetectorViewController.swift */,
 				1AE821901D9DF455001B45B7 /* AudioRecorderViewController.swift */,
 				1AE821941D9DF831001B45B7 /* MainMenuViewController.swift */,
