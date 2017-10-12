@@ -38,7 +38,7 @@ class ChatterDetectorViewController: UIViewController {
     @IBOutlet weak var newSpindleSpeedTextField: UITextField!
     @IBOutlet weak var calculateButton: UIButton!
     
-    private var spindleSpeed:Int {
+    fileprivate var spindleSpeed:Int {
         get {
             if(spindleSpeedTextField.text != nil && spindleSpeedTextField.text != "") {
                 return Int(spindleSpeedTextField.text!)!
@@ -47,7 +47,7 @@ class ChatterDetectorViewController: UIViewController {
         }
     }
     
-    private var maxSpindleSpeed:Int {
+    fileprivate var maxSpindleSpeed:Int {
         get {
             if(maxSpindleSpeedTextField.text != nil && maxSpindleSpeedTextField.text != "") {
                 return Int(maxSpindleSpeedTextField.text!)!
@@ -56,7 +56,7 @@ class ChatterDetectorViewController: UIViewController {
         }
     }
 
-    private var numberOfFlutes:Int {
+    fileprivate var numberOfFlutes:Int {
         get {
             if(numberOfFlutesTextField.text != nil && numberOfFlutesTextField.text != "") {
                 return Int(numberOfFlutesTextField.text!)!
@@ -65,7 +65,7 @@ class ChatterDetectorViewController: UIViewController {
         }
     }
     
-    private var newSpindleSpeed:Int {
+    fileprivate var newSpindleSpeed:Int {
         get {
             if(newSpindleSpeedTextField.text != nil && newSpindleSpeedTextField.text != "") {
                 return Int(newSpindleSpeedTextField.text!)!
@@ -80,7 +80,7 @@ class ChatterDetectorViewController: UIViewController {
 
     @IBOutlet weak var plotChangeToggle: UISegmentedControl!
     
-    @IBAction func PlotChange(sender: UISegmentedControl) {
+    @IBAction func PlotChange(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
         	case 0:
                 updateAudioWaveformPlot()
@@ -93,7 +93,7 @@ class ChatterDetectorViewController: UIViewController {
         }
     }
     //Calculates chatter, switches to display FFT plot.
-    @IBAction func calculateChatter(sender: AnyObject) {
+    @IBAction func calculateChatter(_ sender: AnyObject) {
         if(spindleSpeed * maxSpindleSpeed * numberOfFlutes > 0) {
         	detector.detectChatter(spindleSpeed, maxSpindleSpeed: maxSpindleSpeed, numberOfFlutes: numberOfFlutes)
             isAudioFrequencyDataCalculated = true;
@@ -112,10 +112,10 @@ class ChatterDetectorViewController: UIViewController {
         AudioPlots.y_max = 1
 
         let scaleFactor = max(Int(ceil(Double(detector.audioSampleData[0].count)/1000)),1) //discreet number of plot points
-        let cutAudioData_y = 1.stride(to: detector.audioSampleData[0].count, by: scaleFactor).map {
+        let cutAudioData_y = stride(from: 1, to: detector.audioSampleData[0].count, by: scaleFactor).map {
             Double(detector.audioSampleData[0][$0])} //Skips every scaleFactor.
         let audioData_x = (0...cutAudioData_y.count - 1).map{Double($0)}
-        AudioPlots.addPlot(x_coors: audioData_x, y_coors: cutAudioData_y, color: (20,200,200))
+        AudioPlots.addPlot(audioData_x, y_coors: cutAudioData_y, color: (20,200,200))
     }
     
     func updateAudioFrequencyPlot()
@@ -123,40 +123,40 @@ class ChatterDetectorViewController: UIViewController {
         if(!isAudioFrequencyDataCalculated) {return}
         AudioPlots.clearAllPlots()
         let scaleFactor = max(Int(ceil(Double(detector.amplitudes.count)/1000)),1)
-        let audioData_y = 1.stride(to: detector.amplitudes.count, by:scaleFactor).map{
+        let audioData_y = stride(from: 1, to: detector.amplitudes.count, by:scaleFactor).map{
         	Double(detector.amplitudes[$0])
         }
-        let audioData_x = 1.stride(to: detector.amplitudes.count, by:scaleFactor).map{
+        let audioData_x = stride(from: 1, to: detector.amplitudes.count, by:scaleFactor).map{
             Double(detector.frequencies[$0])
         }
-		let maxY = audioData_y.maxElement()!
+		let maxY = audioData_y.max()!
         if((detector.chatterFrequency) != nil) { // Prevent from crash if chatter not detected.
-        	AudioPlots.addPlot(x_coors: [Double(detector.chatterFrequency),Double(detector.chatterFrequency)], y_coors: [0.0,maxY], color: (255,0,0))
+        	AudioPlots.addPlot([Double(detector.chatterFrequency),Double(detector.chatterFrequency)], y_coors: [0.0,maxY], color: (255,0,0))
         }
         for frq in detector.forcedFrequencies {
-            AudioPlots.addPlot(x_coors: [Double(frq),Double(frq)], y_coors: [0.0,maxY], color: (0,255,0))
+            AudioPlots.addPlot([Double(frq),Double(frq)], y_coors: [0.0,maxY], color: (0,255,0))
 
         }
 
-        AudioPlots.addPlot(x_coors: audioData_x, y_coors: audioData_y, color: (0,0,255))
+        AudioPlots.addPlot(audioData_x, y_coors: audioData_y, color: (0,0,255))
         plotChangeToggle.selectedSegmentIndex = 1
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        newSpindleSpeedTextField.enabled = false;
+        newSpindleSpeedTextField.isEnabled = false;
         self.title = "Chatter Detector"
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         profileNameLabel.text = profileName;
-        let toneURL = NSURL(fileURLWithPath: audioFilePath! )
-        let error = NSErrorPointer();
+        let toneURL = URL(fileURLWithPath: audioFilePath! )
+        let error: NSErrorPointer = nil;
         do {
-            audio = try AVAudioFile(forReading: toneURL, commonFormat: AVAudioCommonFormat.PCMFormatFloat32, interleaved: true)
+            audio = try AVAudioFile(forReading: toneURL, commonFormat: AVAudioCommonFormat.pcmFormatFloat32, interleaved: true)
         } catch let error1 as NSError {
-            error.memory = error1
+            error?.pointee = error1
             audio = nil
         }
         detector = ChatterDetector(audioFile: audio);
@@ -173,24 +173,24 @@ class ChatterDetectorViewController: UIViewController {
 
 //Helper Function turns AudioSample Data into a [[Float]]
 //Should Consider making it a double instead so we don't have to do conversions in the future.
-private func extractAudioSampleData(audioFile: AVAudioFile) -> [[Float]]
+private func extractAudioSampleData(_ audioFile: AVAudioFile) -> [[Float]]
 {
-    let error: NSErrorPointer = nil
+    let error: NSErrorPointer? = nil
     let audioFrameBufferLength = AVAudioFrameCount(audioFile.length)
     //Creates an audio Buffer
-    let audio_buffer = AVAudioPCMBuffer(PCMFormat: audioFile.processingFormat, frameCapacity: audioFrameBufferLength)
+    let audio_buffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: audioFrameBufferLength)
     
     do {
-        try audioFile.readIntoBuffer(audio_buffer)
+        try audioFile.read(into: audio_buffer)
     } catch let error1 as NSError {
-        error.memory = error1
+        error??.pointee = error1
     }
-    
+    //data.advancedBy(index).pointee
     //Extracts buffer data as float pointer
     let data = audio_buffer.floatChannelData
     var floatArray = [[Float]]() //Each channel has its own array.
     for index in 0...Int(audioFile.processingFormat.channelCount) - 1 {
-        let buffer = UnsafeBufferPointer(start: data.advancedBy(index).memory, count: Int(audioFrameBufferLength))
+        let buffer = UnsafeBufferPointer(start: data?.advanced(by: index).pointee  , count: Int(audioFrameBufferLength))
         floatArray.append(Array(buffer))
     }
     return floatArray

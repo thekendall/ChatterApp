@@ -21,7 +21,7 @@ class ChatterDetector{
     var chatterFrequency:Float! = 0.0;
     var adjustedSpindleSpeed:Float = 0.0;
     
-    private var n:Int = 0;
+    fileprivate var n:Int = 0;
 
     init(audioFile:AVAudioFile){
         loadDataFromAudioFile(audioFile);
@@ -31,41 +31,42 @@ class ChatterDetector{
         
     }
 
-    func loadDataFromAudioFile(audioFile:AVAudioFile)
+    func loadDataFromAudioFile(_ audioFile:AVAudioFile)
     {
         audioSampleData = extractAudioSampleData(audioFile);
         fileLoaded = true;
     }
     
-    func forcedFrequencyCalculator(spindleSpeed:Int, numberOfFlutes: Int)
+    func forcedFrequencyCalculator(_ spindleSpeed:Int, numberOfFlutes: Int)
     {
         forcedFrequencies = [Float]();
         // f = spindleSpeed * Flutes/ 60 see report
         let firstHarmonicFrequency = (Float)(spindleSpeed * numberOfFlutes) / 60.0;
-        var i = 0;
-        for( ; i < 10; i++){
+        //for( ; i < 10; i += 1)
+        for i in 0..<10
+        {
             forcedFrequencies.append( (firstHarmonicFrequency * Float(i)));
         }
     }
     
-    private func extractAudioSampleData(audioFile: AVAudioFile) -> [[Float]]
+    fileprivate func extractAudioSampleData(_ audioFile: AVAudioFile) -> [[Float]]
     {
-        let error: NSErrorPointer = nil
+        let error: NSErrorPointer? = nil
         let audioFrameBufferLength = AVAudioFrameCount(audioFile.length)
         //Creates an audio Buffer
-        let audio_buffer = AVAudioPCMBuffer(PCMFormat: audioFile.processingFormat, frameCapacity: audioFrameBufferLength)
+        let audio_buffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: audioFrameBufferLength)
         
         do {
-            try audioFile.readIntoBuffer(audio_buffer)
+            try audioFile.read(into: audio_buffer)
         } catch let error1 as NSError {
-            error.memory = error1
+            error??.pointee = error1
         }
         
         //Extracts buffer data as float pointer
         let data = audio_buffer.floatChannelData
         var floatArray = [[Float]]() //Each channel has its own array.
         for index in 0...Int(audioFile.processingFormat.channelCount) - 1 {
-            let buffer = UnsafeBufferPointer(start: data.advancedBy(index).memory, count: Int(audioFrameBufferLength))
+            let buffer = UnsafeBufferPointer(start: data?.advanced(by: index).pointee, count: Int(audioFrameBufferLength))
             floatArray.append(Array(buffer))
         }
         return floatArray
@@ -78,7 +79,7 @@ class ChatterDetector{
         n = 1 << log2n
         
         //let absFFT = fftAbsoluteMagnitude(audioSampleData[0][0...audioSampleData.count],Int32(log2n)) as [AnyObject] as [Float]; //Converts OBJ-C to [Float]
-        let padding  = [Float](count: (n-audioSampleData[0].count), repeatedValue:0.0);
+        let padding  = [Float](repeating: 0.0, count: (n-audioSampleData[0].count));
         let data = [Float](audioSampleData[0]) + padding
         let absFFT = fftAbsoluteMagnitude(data, Int32(log2n)) as [AnyObject] as! [Float];
         amplitudes = Array(absFFT[0 ..< (n / 2)]) // "J", "Q"
@@ -88,7 +89,7 @@ class ChatterDetector{
         };
     }
     
-    func detectChatter(currentSpindleSpeed:Int, maxSpindleSpeed:Int, numberOfFlutes: Int)
+    func detectChatter(_ currentSpindleSpeed:Int, maxSpindleSpeed:Int, numberOfFlutes: Int)
     {
         calculateFrequencies();
         forcedFrequencyCalculator(currentSpindleSpeed, numberOfFlutes: numberOfFlutes)
@@ -100,9 +101,9 @@ class ChatterDetector{
         var maxAmpFreq:Float
 
         repeat {
-            let indexMax = fftAmps.indexOf(fftAmps.maxElement()!)!;
-            maxAmpFreq = fftFreqs.removeAtIndex(indexMax);
-            if fftAmps.removeAtIndex(indexMax) < 1000 {break};
+            let indexMax = fftAmps.index(of: fftAmps.max()!)!;
+            maxAmpFreq = fftFreqs.remove(at: indexMax);
+            if fftAmps.remove(at: indexMax) < 1000 {break};
             fftFreqs[fftFreqs.count - 1 ] = 0.0
             fftAmps[fftAmps.count - 1 ] = 0.0
             var valid = true;
@@ -116,7 +117,7 @@ class ChatterDetector{
                 if forced*1.0002 > maxAmpFreq {break}
             }
             validChatter = valid;
-            count++;
+            count += 1;
             
         } while !validChatter || count > fftAmps.count;
         if !validChatter
@@ -132,7 +133,7 @@ class ChatterDetector{
             while (newSpeed) > Float(maxSpindleSpeed)
             {
                 newSpeed /= Float(count);
-                count++;
+                count += 1;
             }
             count = 1;
             adjustedSpindleSpeed = newSpeed;

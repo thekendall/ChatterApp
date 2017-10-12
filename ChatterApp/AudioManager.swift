@@ -20,9 +20,9 @@ class AudioManager: NSObject, AVAudioRecorderDelegate {
     
     var validPlaybackAudioFile = false
     var recordedToTemp = false
-    private var audioFileStringName = "temp.aiff"
+    fileprivate var audioFileStringName = "temp.aiff"
     
-    func record(recordDuration: Double) {
+    func record(_ recordDuration: Double) {
         if recorder == nil {
             startRecording(recordDuration)
         }
@@ -49,7 +49,7 @@ class AudioManager: NSObject, AVAudioRecorderDelegate {
             try audioSession.setActive(true)
             audioSession.requestRecordPermission() {
                 [unowned self] (allowed:Bool) -> Void in //We don't have access to self in a queue so we pass it unowned self.
-                dispatch_async(dispatch_get_main_queue()){
+                DispatchQueue.main.async{
                     if allowed {
                         self.recordingEnabled = true; //unownedself
                     } else {
@@ -66,9 +66,9 @@ class AudioManager: NSObject, AVAudioRecorderDelegate {
         startRecording(10.0)
     }
     
-    func startRecording(forDuration: Double) {
-        let audioFilename = getTemporaryDirectory().stringByAppendingString("/temp.aiff")
-        let audioURL = NSURL(fileURLWithPath: audioFilename)
+    func startRecording(_ forDuration: Double) {
+        let audioFilename = getTemporaryDirectory() + "/temp.aiff"
+        let audioURL = URL(fileURLWithPath: audioFilename)
         let settings = [
             AVFormatIDKey: Int(kAudioFormatLinearPCM),//kAudioFormatLinearPCM
             AVSampleRateKey: 44100,
@@ -77,14 +77,14 @@ class AudioManager: NSObject, AVAudioRecorderDelegate {
             AVLinearPCMIsBigEndianKey: true,
             AVLinearPCMIsFloatKey: true,
             AVLinearPCMIsNonInterleaved: false,
-        ]
+        ] as [String : Any]
         
         do {
-            recorder = try AVAudioRecorder(URL: audioURL, settings: settings)
+            recorder = try AVAudioRecorder(url: audioURL, settings: settings)
             recorder.delegate = self;
-            recorder.meteringEnabled = true
+            recorder.isMeteringEnabled = true
             recorder.delegate = self
-            recorder.recordForDuration(forDuration)
+            recorder.record(forDuration: forDuration)
             
         } catch {
             print("Error info: \(error)")
@@ -93,11 +93,11 @@ class AudioManager: NSObject, AVAudioRecorderDelegate {
     }
     
     
-    func finishRecording(success success: Bool) {
+    func finishRecording(success: Bool) {
         recorder.stop()
         recorder = nil
         validPlaybackAudioFile = success
-        let audioFilename = getTemporaryDirectory().stringByAppendingString("/temp.aiff")
+        let audioFilename = getTemporaryDirectory() + "/temp.aiff"
         loadAudioFile(audioFilename)
         print("\(audioFilename)")
         playback()
@@ -107,7 +107,7 @@ class AudioManager: NSObject, AVAudioRecorderDelegate {
     {
         recorder.updateMeters()
         //print(Double(pow(10.0,(recorder.peakPowerForChannel(0)/20))))
-        return Double(pow(10.0,(recorder.averagePowerForChannel(0)/20)))//peakPowerForChannel(0))
+        return Double(pow(10.0,(recorder.averagePower(forChannel: 0)/20)))//peakPowerForChannel(0))
     }
     
     //MARK: Playback
@@ -115,14 +115,14 @@ class AudioManager: NSObject, AVAudioRecorderDelegate {
     
     var audioFilePathString:String?
     
-    func loadAudioFile(audioFilePathString: String) -> Bool
+    func loadAudioFile(_ audioFilePathString: String) -> Bool
     {
         do {
             if(player != nil)
             {
                 player.stop()
             }
-            player = try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: audioFilePathString))
+            player = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: audioFilePathString))
             player.prepareToPlay()
             self.audioFilePathString = audioFilePathString
         } catch {
@@ -132,12 +132,12 @@ class AudioManager: NSObject, AVAudioRecorderDelegate {
         return true
     }
     
-    func saveAudio(filename: String) -> String?
+    func saveAudio(_ filename: String) -> String?
     {
         if(!recordedToTemp){return nil}
         do {
-            let newPath = getDocumentsDirectory().stringByAppendingString("/\(filename).aiff")
-            try NSFileManager.defaultManager().moveItemAtPath(audioFilePathString!, toPath: newPath)
+            let newPath = getDocumentsDirectory() + "/\(filename).aiff"
+            try FileManager.default.moveItem(atPath: audioFilePathString!, toPath: newPath)
             print("\(newPath)")
             return newPath;
         } catch let error as NSError {
@@ -147,7 +147,7 @@ class AudioManager: NSObject, AVAudioRecorderDelegate {
         
     }
     
-    func playback(time: Double = 0.0) {
+    func playback(_ time: Double = 0.0) {
         print("playback")
         if((player) != nil) {
             //player.playAtTime(time)
@@ -170,9 +170,9 @@ class AudioManager: NSObject, AVAudioRecorderDelegate {
         }
     }
     
-    func getTimecode() -> NSTimeInterval
+    func getTimecode() -> TimeInterval
     {
-        if player != nil && player.playing{
+        if player != nil && player.isPlaying{
             return player.currentTime
         } else if recorder != nil {
             return recorder.currentTime
@@ -180,7 +180,7 @@ class AudioManager: NSObject, AVAudioRecorderDelegate {
         return 0.0
     }
     
-    func getAudioLength() -> NSTimeInterval
+    func getAudioLength() -> TimeInterval
     {
         if player != nil {
             return player.duration
@@ -193,7 +193,7 @@ class AudioManager: NSObject, AVAudioRecorderDelegate {
         return audioFilePathString
     }
     
-    func audioRecorderDidFinishRecording(recorder: AVAudioRecorder, successfully flag: Bool) {
+    func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
         if !flag {
             finishRecording(success: false)
         }
@@ -202,7 +202,7 @@ class AudioManager: NSObject, AVAudioRecorderDelegate {
     }
     
     func getDocumentsDirectory() -> String {
-        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         let documentsDirectory = paths[0]
         return documentsDirectory
     }
