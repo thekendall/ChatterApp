@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import AVFoundation
+
 class MainMenuViewController: UIViewController {
     @IBOutlet weak var loadAudioProfileButton: UIButton!
     @IBOutlet weak var recordNewAudioProfileButton: UIButton!
@@ -14,6 +16,16 @@ class MainMenuViewController: UIViewController {
     
     
     override func viewDidLoad() {
+        AVAudioSession.sharedInstance().requestRecordPermission () {
+            [unowned self] allowed in
+            if allowed {
+                // Microphone allowed, do what you like!
+                
+            } else {
+                // User denied microphone. Tell them off!
+                
+            }
+        }
         self.title = "Main Menu"
     }
 }
