@@ -106,10 +106,13 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate {
         checkActivateSave()
         profileNameTextbox.addTarget(self, action: #selector(AudioRecorderViewController.profileNameDidEdit) , for: UIControlEvents.editingChanged)
         AudioPlotter.x_min = 0.0
- 
 
         // Do any additional setup after loading the view, typically from a nib.
     }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true) //This will hide the keyboard
+    }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

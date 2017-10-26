@@ -43,7 +43,7 @@ class ChatterDetector{
         // f = spindleSpeed * Flutes/ 60 see report
         let firstHarmonicFrequency = (Float)(spindleSpeed * numberOfFlutes) / 60.0;
         //for( ; i < 10; i += 1)
-        for i in 0..<10
+        for i in 0..<20
         {
             forcedFrequencies.append( (firstHarmonicFrequency * Float(i)));
         }
@@ -129,13 +129,20 @@ class ChatterDetector{
             count = 1;
             print("newspeed \(newSpeed * Float(count))")
             print("maxSpeed \(maxSpindleSpeed)")
-
-            while (newSpeed) > Float(maxSpindleSpeed)
+            var temp_speed = newSpeed
+            while (temp_speed) < Float(maxSpindleSpeed)
             {
-                newSpeed /= Float(count);
+                temp_speed = newSpeed * Float(count);
                 count += 1;
             }
             count = 1;
+            while (temp_speed) > Float(maxSpindleSpeed)
+            {
+                temp_speed = newSpeed / Float(count);
+                count += 1;
+            }
+            count = 1;
+            newSpeed = temp_speed
             adjustedSpindleSpeed = newSpeed;
         }
         print(adjustedSpindleSpeed)

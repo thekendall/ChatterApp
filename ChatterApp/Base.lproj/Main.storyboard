@@ -90,6 +90,12 @@
                             </label>
                             <view contentMode="scaleToFill" horizontalHuggingPriority="200" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="J4D-YZ-j5A" customClass="GraphView" customModule="ChatterApp" customModuleProvider="target">
                                 <rect key="frame" x="16" y="101" width="288" height="150"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="94f-St-EXn">
+                                        <rect key="frame" x="134" y="65" width="20" height="20"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </activityIndicatorView>
+                                </subviews>
                                 <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="J4D-YZ-j5A" secondAttribute="height" multiplier="48:25" id="EQm-Nf-rLT"/>
@@ -184,6 +190,13 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uC2-3I-2F9">
+                                <rect key="frame" x="25" y="518" width="37" height="30"/>
+                                <state key="normal" title="Email"/>
+                                <connections>
+                                    <action selector="sendEmailWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UQm-5j-WvA"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -193,9 +206,11 @@
                             <constraint firstItem="Lt9-uw-8pD" firstAttribute="centerY" secondItem="5Rt-fE-dvg" secondAttribute="centerY" id="2Br-T7-CKe"/>
                             <constraint firstItem="nuL-NB-AVO" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="4" id="6Oh-ZO-9SB"/>
                             <constraint firstItem="lHY-Jm-pWD" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="4" id="9Jz-Eh-b3A"/>
+                            <constraint firstItem="uC2-3I-2F9" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="9" id="9am-Ep-bIU"/>
                             <constraint firstAttribute="leadingMargin" secondItem="PqQ-wm-Qf3" secondAttribute="leading" id="CJu-69-C1c"/>
                             <constraint firstAttribute="trailingMargin" secondItem="vop-pr-7eO" secondAttribute="trailing" id="DCZ-qs-vkv"/>
                             <constraint firstItem="vop-pr-7eO" firstAttribute="top" secondItem="2d4-33-1yn" secondAttribute="bottom" constant="8" id="F7o-rp-5Nk"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="uC2-3I-2F9" secondAttribute="bottom" constant="20" id="Fdv-gz-HYg"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="qy9-pq-y8T" secondAttribute="bottom" constant="20" id="IHj-oX-b7U"/>
                             <constraint firstItem="5WO-68-Kmn" firstAttribute="centerY" secondItem="LRb-rX-wgz" secondAttribute="centerY" id="JZC-IV-GyV"/>
                             <constraint firstItem="Fvw-Xd-CGU" firstAttribute="width" secondItem="5Rt-fE-dvg" secondAttribute="width" id="LeG-UD-soh"/>
@@ -242,6 +257,7 @@
                         <outlet property="newSpindleSpeedTextField" destination="5Rt-fE-dvg" id="tIK-tS-iP9"/>
                         <outlet property="numberOfFlutesTextField" destination="Fvw-Xd-CGU" id="S1e-Gz-dNn"/>
                         <outlet property="plotChangeToggle" destination="2d4-33-1yn" id="9J4-cX-98p"/>
+                        <outlet property="plotLoadingIndicator" destination="94f-St-EXn" id="d7I-se-oIE"/>
                         <outlet property="profileNameLabel" destination="lHY-Jm-pWD" id="Hbm-sm-0LW"/>
                         <outlet property="spindleSpeedTextField" destination="LRb-rX-wgz" id="siI-Fb-ifD"/>
                     </connections>

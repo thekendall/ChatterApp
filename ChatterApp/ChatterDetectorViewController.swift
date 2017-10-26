@@ -8,10 +8,12 @@
 
 import UIKit
 import AVFoundation
+import MessageUI
 
 
-class ChatterDetectorViewController: UIViewController {
+class ChatterDetectorViewController: UIViewController , MFMailComposeViewControllerDelegate{
     
+    @IBOutlet weak var plotLoadingIndicator:UIActivityIndicatorView!
     var detector = ChatterDetector();
     var audioFilePath:String?;
     var profileName:String? {
@@ -94,12 +96,22 @@ class ChatterDetectorViewController: UIViewController {
     }
     //Calculates chatter, switches to display FFT plot.
     @IBAction func calculateChatter(_ sender: AnyObject) {
-        if(spindleSpeed * maxSpindleSpeed * numberOfFlutes > 0) {
+        plotLoadingIndicator.startAnimating()
+        if(spindleSpeed > 0 && maxSpindleSpeed  > 0  && numberOfFlutes > 0) {
         	detector.detectChatter(spindleSpeed, maxSpindleSpeed: maxSpindleSpeed, numberOfFlutes: numberOfFlutes)
             isAudioFrequencyDataCalculated = true;
             updateAudioFrequencyPlot()
             newSpindleSpeed = Int(detector.adjustedSpindleSpeed)
         }
+        let message = String(detector.chatterFrequency) + "\n" + String(detector.forcedFrequencies[1])
+        
+        let alert = UIAlertController(title: "Chatter Details", message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Click", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+        
+
+        plotLoadingIndicator.stopAnimating()
+
     }
     
 	func updateAudioWaveformPlot()
@@ -146,6 +158,8 @@ class ChatterDetectorViewController: UIViewController {
         super.viewDidLoad()
         newSpindleSpeedTextField.isEnabled = false;
         self.title = "Chatter Detector"
+        plotLoadingIndicator.hidesWhenStopped = true
+        plotLoadingIndicator.stopAnimating()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -167,9 +181,31 @@ class ChatterDetectorViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true) //This will hide the keyboard
+    }
 
-
+    @IBAction func sendEmail(sender: UIButton) {
+        //Check to see the device can send email.
+        if( MFMailComposeViewController.canSendMail() ) {
+            let mailComposer = MFMailComposeViewController()
+            mailComposer.mailComposeDelegate = self
+            //Set the subject and message of the email
+            mailComposer.setSubject("Chatter Data: " + profileName!)
+            mailComposer.setMessageBody("Spindle Speed: " + String(spindleSpeed) +
+                "\n Number of Flutes: " + String(numberOfFlutes) + "\n Max Spindle Speed: " + String(maxSpindleSpeed), isHTML: false)
+            if let fileData = NSData(contentsOfFile: audioFilePath!) {
+                    mailComposer.addAttachmentData(fileData as Data, mimeType: "audio/aiff", fileName: "chatterRecording.aiff")
+                }
+            self.present(mailComposer, animated: true, completion: nil)
+        }
+    }
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        self.dismiss(animated: true, completion: nil)
+    }
 }
+
 
 //Helper Function turns AudioSample Data into a [[Float]]
 //Should Consider making it a double instead so we don't have to do conversions in the future.
