@@ -32,8 +32,7 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate {
     
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var playButton: UIButton!
-    @IBOutlet weak var profileNameTextbox: UITextField!
-    @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var analyzeButton: UIButton!
     
     
     @IBAction func record(_ sender: AnyObject) {
@@ -59,11 +58,10 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate {
     }
     
     @IBAction func save(_ sender: UIButton) {
-        let profileNameFromTextBox = profileNameTextbox.text;
+        let profileNameFromTextBox = UUID().uuidString;
         if((profileNameFromTextBox) != nil)
         {
-            //let path = NSBundle.mainBundle().pathForResource("wavTones.com.unregistred.dualfreq_600Hz_-6dBFS_1200Hz_-18dBFS_5s", ofType: ".wav")
-            audioFilePath = audioManager.saveAudio(profileNameFromTextBox!) //path //test
+            audioFilePath = audioManager.saveAudio(profileNameFromTextBox) //path //test
             profileName = profileNameFromTextBox
         }
         performSegue(withIdentifier: "ShowChatterDetector", sender: sender)
@@ -86,7 +84,6 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate {
         if(time >= recordLength) {
             timecode.text = stringFromTimeInterval(10.0)
         }
-
     }
     
     func stringFromTimeInterval(_ interval:TimeInterval) -> String {
@@ -103,8 +100,8 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate {
         super.viewDidLoad()
         self.title = "Recorder"
         audioManager.delegate = self;
-        checkActivateSave()
-        profileNameTextbox.addTarget(self, action: #selector(AudioRecorderViewController.profileNameDidEdit) , for: UIControlEvents.editingChanged)
+        //checkActivateSave()
+//        profileNameTextbox.addTarget(self, action: #selector(AudioRecorderViewController.profileNameDidEdit) , for: UIControlEvents.editingChanged)
         AudioPlotter.x_min = 0.0
 
         // Do any additional setup after loading the view, typically from a nib.
@@ -122,7 +119,7 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowChatterDetector"
         {
-            if let destinationVC = (segue.destination as? UINavigationController)?.topViewController as? ChatterDetectorViewController {
+            if let destinationVC = ((segue.destination as? UITabBarController)?.childViewControllers[0] as? UINavigationController)?.topViewController as? ChatterDetectorViewController {
                 destinationVC.audioFilePath = audioFilePath;
                 destinationVC.profileName = profileName;
                 print("\(audioFilePath)")
@@ -131,17 +128,13 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate {
         }
     }
     
-    func profileNameDidEdit()
-    {
-        checkActivateSave()
-    }
     
     fileprivate func checkActivateSave()
     {
-        if(profileNameTextbox.text != "" && profileNameTextbox.text != nil && hasRecording) {
-            saveButton.isEnabled = true;
+        if(hasRecording) {
+            analyzeButton.isEnabled = true;
         } else {
-            saveButton.isEnabled = false;
+            analyzeButton.isEnabled = false;
         }
 
     }

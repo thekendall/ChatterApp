@@ -10,16 +10,21 @@ import Foundation
 import AVFoundation
 
 class ChatterDetector{
-    
+    enum FFTSTATUS {
+        case unknown
+        case calculating
+        case calculated
+    }
     var audioSampleData = [[Float]]();
     //Plot Data
     var forcedFrequencies = [Float]();
     var amplitudes = [Float]();
     var frequencies:[Float] = [Float]()
-
     var fileLoaded = false;
     var chatterFrequency:Float! = 0.0;
     var adjustedSpindleSpeed:Float = 0.0;
+    var fftStatus = FFTSTATUS.unknown;
+    
     
     fileprivate var n:Int = 0;
 
@@ -74,24 +79,40 @@ class ChatterDetector{
     
     
     func calculateFrequencies()
-    {
-        let log2n = Int(ceil(log2(Float(audioSampleData[0].count))));
-        n = 1 << log2n
-        
-        //let absFFT = fftAbsoluteMagnitude(audioSampleData[0][0...audioSampleData.count],Int32(log2n)) as [AnyObject] as [Float]; //Converts OBJ-C to [Float]
-        let padding  = [Float](repeating: 0.0, count: (n-audioSampleData[0].count));
-        let data = [Float](audioSampleData[0]) + padding
-        let absFFT = fftAbsoluteMagnitude(data, Int32(log2n)) as [AnyObject] as! [Float];
-        amplitudes = Array(absFFT[0 ..< (n / 2)]) // "J", "Q"
-        frequencies = (0...amplitudes.count-1).map()
-        { (index) -> Float in
-                return Float(index) * 44100.0 / Float(self.n);
-        };
+    { // Calculates the Fourier Transform
+        if(fileLoaded) {
+            let queue = DispatchQueue(label: "io.thekendall.fft");
+            self.fftStatus = FFTSTATUS.calculating
+            queue.async {
+                let log2n = Int(ceil(log2(Float(self.audioSampleData[0].count))));
+                self.n = 1 << log2n
+                
+                //let absFFT = fftAbsoluteMagnitude(audioSampleData[0][0...audioSampleData.count],Int32(log2n)) as [AnyObject] as [Float]; //Converts OBJ-C to [Float]
+                let padding  = [Float](repeating: 0.0, count: (self.n-self.audioSampleData[0].count));
+                let data = [Float](self.audioSampleData[0]) + padding
+                let absFFT = fftAbsoluteMagnitude(data, Int32(log2n)) as [AnyObject] as! [Float];
+                self.amplitudes = Array(absFFT[0 ..< (self.n / 2)]) // "J", "Q"
+                self.frequencies = (0...self.amplitudes.count-1).map()
+                    { (index) -> Float in
+                        return Float(index) * 44100.0 / Float(self.n); // For 44100 Sample rate
+                };
+                self.fftStatus = FFTSTATUS.calculated
+            }
+
+        }
     }
     
     func detectChatter(_ currentSpindleSpeed:Int, maxSpindleSpeed:Int, numberOfFlutes: Int)
     {
-        calculateFrequencies();
+
+        switch fftStatus {
+        case FFTSTATUS.unknown:
+            calculateFrequencies();
+        case FFTSTATUS.calculating:
+                while(FFTSTATUS.calculating == FFTSTATUS.calculating) {}
+            default:
+                break;
+        }
         forcedFrequencyCalculator(currentSpindleSpeed, numberOfFlutes: numberOfFlutes)
         var fftAmps = amplitudes;
         var fftFreqs = frequencies;

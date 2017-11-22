@@ -13,27 +13,19 @@ import MessageUI
 
 class ChatterDetectorViewController: UIViewController , MFMailComposeViewControllerDelegate{
     
-    @IBOutlet weak var plotLoadingIndicator:UIActivityIndicatorView!
-    var detector = ChatterDetector();
+    var detector:ChatterDetector?; // Comes from Tab BAR
     var audioFilePath:String?;
-    var profileName:String? {
-        didSet {
-        }
-    }
-    @IBOutlet weak var profileNameLabel: UILabel!
-    
+    var profileName:String?
     var isAudioFrequencyDataCalculated = false;
-    var audio: AVAudioFile!{
-        didSet
-        {
-            
-        }
-    }
+    var audio: AVAudioFile!
 
+    @IBOutlet weak var audioPlotIndicator: UIActivityIndicatorView!
     @IBOutlet weak var AudioPlots: GraphView!
     
     //MARK: Parameter Fields
     
+    @IBOutlet weak var newFeedrateTextField: UITextField!
+    @IBOutlet weak var feedrateTextField: UITextField!
     @IBOutlet weak var spindleSpeedTextField: UITextField!
     @IBOutlet weak var maxSpindleSpeedTextField: UITextField!
     @IBOutlet weak var numberOfFlutesTextField: UITextField!
@@ -78,40 +70,32 @@ class ChatterDetectorViewController: UIViewController , MFMailComposeViewControl
             newSpindleSpeedTextField.text = "\(item)"
         }
     }
-
-
-    @IBOutlet weak var plotChangeToggle: UISegmentedControl!
-    
-    @IBAction func PlotChange(_ sender: UISegmentedControl) {
-        switch sender.selectedSegmentIndex {
-        	case 0:
-                updateAudioWaveformPlot()
-                break;
-        	case 1:
-            	updateAudioFrequencyPlot()
-                break;
-        	default:
-            	break;
+    fileprivate var newFeedrate:Int {
+        get {
+            if(newFeedrateTextField.text != nil && newFeedrateTextField.text != "") {
+                return Int(newFeedrateTextField.text!)!
+            }
+            return 0;
+        }
+        set(item) {
+            newFeedrateTextField.text = "\(item)"
         }
     }
+    
     //Calculates chatter, switches to display FFT plot.
-    @IBAction func calculateChatter(_ sender: AnyObject) {
-        plotLoadingIndicator.startAnimating()
+    func calculateChatter() {
         if(spindleSpeed > 0 && maxSpindleSpeed  > 0  && numberOfFlutes > 0) {
-        	detector.detectChatter(spindleSpeed, maxSpindleSpeed: maxSpindleSpeed, numberOfFlutes: numberOfFlutes)
+        	detector?.detectChatter(spindleSpeed, maxSpindleSpeed: maxSpindleSpeed, numberOfFlutes: numberOfFlutes)
             isAudioFrequencyDataCalculated = true;
-            updateAudioFrequencyPlot()
-            newSpindleSpeed = Int(detector.adjustedSpindleSpeed)
+            //updateAudioFrequencyPlot()
+            newSpindleSpeed = Int((detector?.adjustedSpindleSpeed)!)
         }
-        let message = String(detector.chatterFrequency) + "\n" + String(detector.forcedFrequencies[1])
+
+        let message = String(describing: detector?.chatterFrequency) + "\n" + String(describing: detector?.forcedFrequencies[1])
         
         let alert = UIAlertController(title: "Chatter Details", message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "Click", style: UIAlertActionStyle.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
-        
-
-        plotLoadingIndicator.stopAnimating()
-
     }
     
 	func updateAudioWaveformPlot()
@@ -123,48 +107,46 @@ class ChatterDetectorViewController: UIViewController , MFMailComposeViewControl
         AudioPlots.y_min = -1
         AudioPlots.y_max = 1
 
-        let scaleFactor = max(Int(ceil(Double(detector.audioSampleData[0].count)/1000)),1) //discreet number of plot points
-        let cutAudioData_y = stride(from: 1, to: detector.audioSampleData[0].count, by: scaleFactor).map {
-            Double(detector.audioSampleData[0][$0])} //Skips every scaleFactor.
+        let scaleFactor = max(Int(ceil(Double((detector?.audioSampleData[0].count)!)/3000)),1) //discreet number of plot points
+        let cutAudioData_y = stride(from: 1, to: (detector?.audioSampleData[0].count)!, by: scaleFactor).map {
+            Double((detector?.audioSampleData[0][$0])!)} //Skips every scaleFactor.
         let audioData_x = (0...cutAudioData_y.count - 1).map{Double($0)}
-        AudioPlots.addPlot(audioData_x, y_coors: cutAudioData_y, color: (20,200,200))
+        let queue = DispatchQueue.main;
+        audioPlotIndicator.startAnimating();
+        queue.async {
+            self.AudioPlots.addPlot(audioData_x, y_coors: cutAudioData_y, color: (20,200,200));
+            self.audioPlotIndicator.stopAnimating();
+        }
+        detector?.calculateFrequencies()
     }
-    
-    func updateAudioFrequencyPlot()
-    {
-        if(!isAudioFrequencyDataCalculated) {return}
-        AudioPlots.clearAllPlots()
-        let scaleFactor = max(Int(ceil(Double(detector.amplitudes.count)/1000)),1)
-        let audioData_y = stride(from: 1, to: detector.amplitudes.count, by:scaleFactor).map{
-        	Double(detector.amplitudes[$0])
+    func textFieldDidChange(_ textField: UITextField) { //For recaculating after parameters changed
+        if(maxSpindleSpeed != 0 && spindleSpeed != 0 && numberOfFlutes != 0) {
+            calculateChatter();
         }
-        let audioData_x = stride(from: 1, to: detector.amplitudes.count, by:scaleFactor).map{
-            Double(detector.frequencies[$0])
-        }
-		let maxY = audioData_y.max()!
-        if((detector.chatterFrequency) != nil) { // Prevent from crash if chatter not detected.
-        	AudioPlots.addPlot([Double(detector.chatterFrequency),Double(detector.chatterFrequency)], y_coors: [0.0,maxY], color: (255,0,0))
-        }
-        for frq in detector.forcedFrequencies {
-            AudioPlots.addPlot([Double(frq),Double(frq)], y_coors: [0.0,maxY], color: (0,255,0))
-
-        }
-
-        AudioPlots.addPlot(audioData_x, y_coors: audioData_y, color: (0,0,255))
-        plotChangeToggle.selectedSegmentIndex = 1
     }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let tabBar = tabBarController as! BaseTabBarController;
+        detector = tabBar.detector
+        
+        audioPlotIndicator.hidesWhenStopped = true;
         newSpindleSpeedTextField.isEnabled = false;
+        newFeedrateTextField.isEnabled = false;
         self.title = "Chatter Detector"
-        plotLoadingIndicator.hidesWhenStopped = true
-        plotLoadingIndicator.stopAnimating()
+        // Used for detecting when to refresh
+        spindleSpeedTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingDidEnd)
+        maxSpindleSpeedTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for:  .editingDidEnd)
+        numberOfFlutesTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for:  .editingDidEnd)
+        feedrateTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for:  .editingDidEnd)
+
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        profileNameLabel.text = profileName;
         let toneURL = URL(fileURLWithPath: audioFilePath! )
         let error: NSErrorPointer = nil;
         do {
@@ -186,24 +168,6 @@ class ChatterDetectorViewController: UIViewController , MFMailComposeViewControl
         self.view.endEditing(true) //This will hide the keyboard
     }
 
-    @IBAction func sendEmail(sender: UIButton) {
-        //Check to see the device can send email.
-        if( MFMailComposeViewController.canSendMail() ) {
-            let mailComposer = MFMailComposeViewController()
-            mailComposer.mailComposeDelegate = self
-            //Set the subject and message of the email
-            mailComposer.setSubject("Chatter Data: " + profileName!)
-            mailComposer.setMessageBody("Spindle Speed: " + String(spindleSpeed) +
-                "\n Number of Flutes: " + String(numberOfFlutes) + "\n Max Spindle Speed: " + String(maxSpindleSpeed), isHTML: false)
-            if let fileData = NSData(contentsOfFile: audioFilePath!) {
-                    mailComposer.addAttachmentData(fileData as Data, mimeType: "audio/aiff", fileName: "chatterRecording.aiff")
-                }
-            self.present(mailComposer, animated: true, completion: nil)
-        }
-    }
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        self.dismiss(animated: true, completion: nil)
-    }
 }
 
 
@@ -231,5 +195,7 @@ private func extractAudioSampleData(_ audioFile: AVAudioFile) -> [[Float]]
     }
     return floatArray
 }
+
+
 
 
