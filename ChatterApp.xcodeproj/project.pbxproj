@@ -8,9 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		1A31670B1D755261002B1371 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A31670A1D755261002B1371 /* GraphView.swift */; };
-		1A4D20931FC4352400C98913 /* ChatterProfile.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1A4D20911FC4352400C98913 /* ChatterProfile.xcdatamodeld */; };
-		1A4D20961FC436A000C98913 /* CuttingProfiles.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1A4D20941FC436A000C98913 /* CuttingProfiles.xcdatamodeld */; };
 		1A505E891DC1A7CA003A1D3B /* ChatterDetectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A505E881DC1A7CA003A1D3B /* ChatterDetectorViewController.swift */; };
+		1A6476E01FC5F1B4009265C9 /* ReportTableTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6476DF1FC5F1B4009265C9 /* ReportTableTableViewController.swift */; };
+		1A6476E21FC61A8E009265C9 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6476E11FC61A8D009265C9 /* ProfileTableViewCell.swift */; };
+		1A6476EB1FC62118009265C9 /* CuttingProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6476EA1FC62118009265C9 /* CuttingProfile.swift */; };
 		1A7151D21FC5985F000A9C29 /* BaseTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7151D11FC5985F000A9C29 /* BaseTabBarController.swift */; };
 		1A7151D41FC59E27000A9C29 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7151D31FC59E27000A9C29 /* ReportViewController.swift */; };
 		1A7151D61FC5BBF4000A9C29 /* AnalyzeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7151D51FC5BBF4000A9C29 /* AnalyzeViewController.swift */; };
@@ -42,9 +43,10 @@
 
 /* Begin PBXFileReference section */
 		1A31670A1D755261002B1371 /* GraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GraphView.swift; path = ../../Grapher/Grapher/GraphView.swift; sourceTree = "<group>"; };
-		1A4D20921FC4352400C98913 /* ChatterProfile.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ChatterProfile.xcdatamodel; sourceTree = "<group>"; };
-		1A4D20951FC436A000C98913 /* CuttingProfiles.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CuttingProfiles.xcdatamodel; sourceTree = "<group>"; };
 		1A505E881DC1A7CA003A1D3B /* ChatterDetectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatterDetectorViewController.swift; sourceTree = "<group>"; };
+		1A6476DF1FC5F1B4009265C9 /* ReportTableTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportTableTableViewController.swift; sourceTree = "<group>"; };
+		1A6476E11FC61A8D009265C9 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileTableViewCell.swift; path = ../ProfileTableViewCell.swift; sourceTree = "<group>"; };
+		1A6476EA1FC62118009265C9 /* CuttingProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CuttingProfile.swift; sourceTree = "<group>"; };
 		1A7151D11FC5985F000A9C29 /* BaseTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTabBarController.swift; sourceTree = "<group>"; };
 		1A7151D31FC59E27000A9C29 /* ReportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		1A7151D51FC5BBF4000A9C29 /* AnalyzeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyzeViewController.swift; sourceTree = "<group>"; };
@@ -107,7 +109,6 @@
 		EB47CF9C1CACD29700BA218E = {
 			isa = PBXGroup;
 			children = (
-				1A4D20941FC436A000C98913 /* CuttingProfiles.xcdatamodeld */,
 				EB47CFA71CACD29700BA218E /* ChatterApp */,
 				EB47CFBD1CACD29700BA218E /* ChatterAppTests */,
 				EB47CFA61CACD29700BA218E /* Products */,
@@ -126,12 +127,14 @@
 		EB47CFA71CACD29700BA218E /* ChatterApp */ = {
 			isa = PBXGroup;
 			children = (
+				1A6476EA1FC62118009265C9 /* CuttingProfile.swift */,
+				1A6476E11FC61A8D009265C9 /* ProfileTableViewCell.swift */,
 				1A505E8B1DC1A9A6003A1D3B /* Misc */,
 				1A505E8A1DC1A98A003A1D3B /* FFT Stuff */,
 				EB47CFAE1CACD29700BA218E /* Main.storyboard */,
 				1A7151D11FC5985F000A9C29 /* BaseTabBarController.swift */,
 				1A7151D31FC59E27000A9C29 /* ReportViewController.swift */,
-				1A4D20911FC4352400C98913 /* ChatterProfile.xcdatamodeld */,
+				1A6476DF1FC5F1B4009265C9 /* ReportTableTableViewController.swift */,
 				1A31670A1D755261002B1371 /* GraphView.swift */,
 				1A7151D51FC5BBF4000A9C29 /* AnalyzeViewController.swift */,
 				1A505E881DC1A7CA003A1D3B /* ChatterDetectorViewController.swift */,
@@ -288,16 +291,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				1AE821951D9DF831001B45B7 /* MainMenuViewController.swift in Sources */,
+				1A6476E21FC61A8E009265C9 /* ProfileTableViewCell.swift in Sources */,
 				1A31670B1D755261002B1371 /* GraphView.swift in Sources */,
 				1A505E891DC1A7CA003A1D3B /* ChatterDetectorViewController.swift in Sources */,
 				1AE821931D9DF495001B45B7 /* AudioManager.swift in Sources */,
 				1AE821911D9DF455001B45B7 /* AudioRecorderViewController.swift in Sources */,
 				1A7151D61FC5BBF4000A9C29 /* AnalyzeViewController.swift in Sources */,
 				EB47CFD21CACD9D100BA218E /* ChatterDetector.swift in Sources */,
+				1A6476EB1FC62118009265C9 /* CuttingProfile.swift in Sources */,
 				1A7151D21FC5985F000A9C29 /* BaseTabBarController.swift in Sources */,
-				1A4D20961FC436A000C98913 /* CuttingProfiles.xcdatamodeld in Sources */,
+				1A6476E01FC5F1B4009265C9 /* ReportTableTableViewController.swift in Sources */,
 				1A7151D41FC59E27000A9C29 /* ReportViewController.swift in Sources */,
-				1A4D20931FC4352400C98913 /* ChatterProfile.xcdatamodeld in Sources */,
 				EB47CFAB1CACD29700BA218E /* AppDelegate.swift in Sources */,
 				EB47CFD01CACD5C600BA218E /* MatlabFFT.m in Sources */,
 			);
@@ -525,30 +529,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		1A4D20911FC4352400C98913 /* ChatterProfile.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				1A4D20921FC4352400C98913 /* ChatterProfile.xcdatamodel */,
-			);
-			currentVersion = 1A4D20921FC4352400C98913 /* ChatterProfile.xcdatamodel */;
-			path = ChatterProfile.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-		1A4D20941FC436A000C98913 /* CuttingProfiles.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				1A4D20951FC436A000C98913 /* CuttingProfiles.xcdatamodel */,
-			);
-			currentVersion = 1A4D20951FC436A000C98913 /* CuttingProfiles.xcdatamodel */;
-			name = CuttingProfiles.xcdatamodeld;
-			path = ChatterApp/CuttingProfiles.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = EB47CF9D1CACD29700BA218E /* Project object */;
 }

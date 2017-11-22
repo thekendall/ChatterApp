@@ -80,8 +80,9 @@ class ChatterDetector{
     
     func calculateFrequencies()
     { // Calculates the Fourier Transform
+        print("Beginning")
         if(fileLoaded) {
-            let queue = DispatchQueue(label: "io.thekendall.fft");
+            let queue = DispatchQueue.global(qos: .userInteractive);
             self.fftStatus = FFTSTATUS.calculating
             queue.async {
                 let log2n = Int(ceil(log2(Float(self.audioSampleData[0].count))));
@@ -97,6 +98,8 @@ class ChatterDetector{
                         return Float(index) * 44100.0 / Float(self.n); // For 44100 Sample rate
                 };
                 self.fftStatus = FFTSTATUS.calculated
+                print("ENDDDD")
+
             }
 
         }

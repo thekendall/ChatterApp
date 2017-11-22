@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class AudioRecorderViewController: UIViewController, AudioManagerDelegate {
     
@@ -25,9 +26,11 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate {
     let recordLength = 10.0;
     fileprivate var audioFilePath:String?;
     fileprivate var profileName:String?;
-    
+    var profiles: [NSManagedObject] = []
+
     @IBOutlet weak var timecode: UILabel!
     
+    @IBOutlet weak var savedProfileTableView: UITableView!
     @IBOutlet weak var AudioPlotter: GraphView!
     
     @IBOutlet weak var recordButton: UIButton!
@@ -59,11 +62,8 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate {
     
     @IBAction func save(_ sender: UIButton) {
         let profileNameFromTextBox = UUID().uuidString;
-        if((profileNameFromTextBox) != nil)
-        {
-            audioFilePath = audioManager.saveAudio(profileNameFromTextBox) //path //test
-            profileName = profileNameFromTextBox
-        }
+        audioFilePath = audioManager.saveAudio(profileNameFromTextBox) //path //test
+        profileName = profileNameFromTextBox
         performSegue(withIdentifier: "ShowChatterDetector", sender: sender)
 
     }
@@ -99,13 +99,30 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate {
         
         super.viewDidLoad()
         self.title = "Recorder"
-        audioManager.delegate = self;
+        //audioManager.delegate = self;
         //checkActivateSave()
 //        profileNameTextbox.addTarget(self, action: #selector(AudioRecorderViewController.profileNameDidEdit) , for: UIControlEvents.editingChanged)
         AudioPlotter.x_min = 0.0
-
         // Do any additional setup after loading the view, typically from a nib.
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+        
+//        let managedContext = appDelegate.persistentContainer.viewContext
+//        
+//        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "CuttingProfile")
+//        do {
+//            profiles = try managedContext.fetch(fetchRequest)
+//        } catch let error as NSError {
+//            print("Could not fetch. \(error), \(error.userInfo)")
+//        }
+    }
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true) //This will hide the keyboard
     }
@@ -155,6 +172,52 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate {
         hasRecording = true;
     }
     
+    func saveProfile(name: String) {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+        
+        let managedContext = appDelegate.persistentContainer.viewContext
+        
+        let entity = NSEntityDescription.entity(forEntityName: "CuttingProfile",
+                                                in: managedContext)!
+        let profile = NSManagedObject(entity: entity,
+                                     insertInto: managedContext) //NewProfile
+        
+        profile.setValue(name, forKeyPath: "profileName")
+        
+//        //        newUser.setValue("Shashikant", forKey: "username")
+//        newUser.setValue("1234", forKey: "password")
+//        newUser.setValue("12", forKey: "age")
+
+        
+        do {
+            try managedContext.save()
+            profiles.append(profile)
+        } catch let error as NSError {
+            print("Could not save. \(error), \(error.userInfo)")
+        }
+    }
     
+
+    
+
 }
+
+extension AudioRecorderViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
+        return profiles.count
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let profile = profiles[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileCell", for: indexPath) as? ProfileTableViewCell;
+        cell?.profileNameLabel.text = profile.value(forKeyPath: "profileName") as? String
+        return cell!
+    }
+}
+
 

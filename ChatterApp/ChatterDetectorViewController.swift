@@ -107,7 +107,7 @@ class ChatterDetectorViewController: UIViewController , MFMailComposeViewControl
         AudioPlots.y_min = -1
         AudioPlots.y_max = 1
 
-        let scaleFactor = max(Int(ceil(Double((detector?.audioSampleData[0].count)!)/3000)),1) //discreet number of plot points
+        let scaleFactor = max(Int(ceil(Double((detector?.audioSampleData[0].count)!)/2000)),1) //discreet number of plot points
         let cutAudioData_y = stride(from: 1, to: (detector?.audioSampleData[0].count)!, by: scaleFactor).map {
             Double((detector?.audioSampleData[0][$0])!)} //Skips every scaleFactor.
         let audioData_x = (0...cutAudioData_y.count - 1).map{Double($0)}
@@ -141,12 +141,6 @@ class ChatterDetectorViewController: UIViewController , MFMailComposeViewControl
         maxSpindleSpeedTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for:  .editingDidEnd)
         numberOfFlutesTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for:  .editingDidEnd)
         feedrateTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for:  .editingDidEnd)
-
-
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         let toneURL = URL(fileURLWithPath: audioFilePath! )
         let error: NSErrorPointer = nil;
         do {
@@ -157,6 +151,18 @@ class ChatterDetectorViewController: UIViewController , MFMailComposeViewControl
         }
         detector = ChatterDetector(audioFile: audio);
         updateAudioWaveformPlot()
+
+
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
+    override func viewWillDisappear(_ animated:Bool) {
+        super.viewWillDisappear(animated)
+        let tab = tabBarController as! BaseTabBarController;
+        tab.detector = detector!
     }
     
     override func didReceiveMemoryWarning() {
