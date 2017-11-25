@@ -11,7 +11,7 @@ import AVFoundation
 import MessageUI
 
 
-class ChatterDetectorViewController: UIViewController , MFMailComposeViewControllerDelegate{
+class ChatterDetectorViewController: UIViewController , MFMailComposeViewControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     var detector:ChatterDetector?; // Comes from Tab BAR
     var audioFilePath:String?;
@@ -119,6 +119,7 @@ class ChatterDetectorViewController: UIViewController , MFMailComposeViewControl
         }
         detector?.calculateFrequencies()
     }
+    
     func textFieldDidChange(_ textField: UITextField) { //For recaculating after parameters changed
         if(maxSpindleSpeed != 0 && spindleSpeed != 0 && numberOfFlutes != 0) {
             calculateChatter();
@@ -151,7 +152,14 @@ class ChatterDetectorViewController: UIViewController , MFMailComposeViewControl
         }
         detector = ChatterDetector(audioFile: audio);
         updateAudioWaveformPlot()
-
+        
+        //Unit Picker Setup
+        feedrateUnitPicker.frame = CGRect(x:0,y:self.view.frame.height, width:self.view.frame.width, height:UIScreen.main.bounds.height/2.65)
+        feedrateUnitPicker.dataSource = self;
+        feedrateUnitPicker.delegate = self;
+        feedrateUnitPicker.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        feedrateUnitPicker.isHidden = true;
+        self.view.addSubview(feedrateUnitPicker)
 
     }
     
@@ -172,7 +180,73 @@ class ChatterDetectorViewController: UIViewController , MFMailComposeViewControl
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true) //This will hide the keyboard
+        self.dismissUIPicker()
     }
+    
+    func dismissUIPicker() {
+        print("Second")
+        if(feedRateUnit.isHighlighted) {return}
+        UIView.animate(
+            withDuration: 0.1,
+            delay: 0.0,
+            options: .curveEaseOut,
+            animations: {
+                self.feedrateUnitPicker.frame.origin.y = self.view.frame.maxY;
+        }) { (completed) in
+            self.tabBarController?.tabBar.isHidden = false;
+            self.feedrateUnitPicker.isHidden = true;
+        }
+
+    }
+    
+    // MARK: UIPickerView Delegation
+    
+    var feedrateUnitPicker: UIPickerView = UIPickerView()
+    let feedRateUnits = ["in/s","mm/s"];
+
+    
+    @IBOutlet weak var feedRateUnit: UIButton!
+    
+    @IBAction func pickFeedRateUnits(_ sender: Any) {
+        if(feedrateUnitPicker.isHidden) {
+            self.tabBarController?.tabBar.isHidden = true;
+            self.feedrateUnitPicker.frame.origin.y = self.view.frame.height;
+            self.feedrateUnitPicker.frame.origin.x = 0;
+            let calculatedSection = (self.view.frame.height) - self.feedrateUnitPicker.frame.height
+            
+            feedrateUnitPicker.isHidden = false;
+            self.feedrateUnitPicker.frame.origin.y = self.view.frame.maxY;
+            UIView.animate(
+                withDuration: 0.2,
+                delay: 0.0,
+                options: .curveEaseIn,
+                animations: {
+                    self.feedrateUnitPicker.frame.origin.y = calculatedSection;
+            }) { (completed) in
+                
+            }
+        }
+//        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ChatterDetectorViewController.dismissUIPicker))
+//        view.addGestureRecognizer(tap);
+    }
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1;
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return feedRateUnits.count;
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return feedRateUnits[row];
+
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        feedRateUnit.setTitle(feedRateUnits[row], for: UIControlState.normal);
+    }
+    
+
 
 }
 

@@ -11,13 +11,13 @@
 		1A505E891DC1A7CA003A1D3B /* ChatterDetectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A505E881DC1A7CA003A1D3B /* ChatterDetectorViewController.swift */; };
 		1A6476E01FC5F1B4009265C9 /* ReportTableTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6476DF1FC5F1B4009265C9 /* ReportTableTableViewController.swift */; };
 		1A6476E21FC61A8E009265C9 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6476E11FC61A8D009265C9 /* ProfileTableViewCell.swift */; };
-		1A6476EB1FC62118009265C9 /* CuttingProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6476EA1FC62118009265C9 /* CuttingProfile.swift */; };
 		1A7151D21FC5985F000A9C29 /* BaseTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7151D11FC5985F000A9C29 /* BaseTabBarController.swift */; };
-		1A7151D41FC59E27000A9C29 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7151D31FC59E27000A9C29 /* ReportViewController.swift */; };
 		1A7151D61FC5BBF4000A9C29 /* AnalyzeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7151D51FC5BBF4000A9C29 /* AnalyzeViewController.swift */; };
+		1ABEF7591FC6267900B0B00F /* CoreDataProfile.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1ABEF7571FC6267900B0B00F /* CoreDataProfile.xcdatamodeld */; };
 		1AE821911D9DF455001B45B7 /* AudioRecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE821901D9DF455001B45B7 /* AudioRecorderViewController.swift */; };
 		1AE821931D9DF495001B45B7 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE821921D9DF495001B45B7 /* AudioManager.swift */; };
 		1AE821951D9DF831001B45B7 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE821941D9DF831001B45B7 /* MainMenuViewController.swift */; };
+		1AEC16571FC9288900A04A7B /* SelectorButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEC16561FC9288900A04A7B /* SelectorButton.swift */; };
 		EB15E49B1CB9A28D007B04C5 /* wavTones.com.unregistred.dualfreq_600Hz_-6dBFS_1200Hz_-18dBFS_5s.wav in Resources */ = {isa = PBXBuildFile; fileRef = EB15E49A1CB9A28D007B04C5 /* wavTones.com.unregistred.dualfreq_600Hz_-6dBFS_1200Hz_-18dBFS_5s.wav */; };
 		EB47CFAB1CACD29700BA218E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB47CFAA1CACD29700BA218E /* AppDelegate.swift */; };
 		EB47CFB01CACD29700BA218E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB47CFAE1CACD29700BA218E /* Main.storyboard */; };
@@ -46,13 +46,13 @@
 		1A505E881DC1A7CA003A1D3B /* ChatterDetectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatterDetectorViewController.swift; sourceTree = "<group>"; };
 		1A6476DF1FC5F1B4009265C9 /* ReportTableTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportTableTableViewController.swift; sourceTree = "<group>"; };
 		1A6476E11FC61A8D009265C9 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileTableViewCell.swift; path = ../ProfileTableViewCell.swift; sourceTree = "<group>"; };
-		1A6476EA1FC62118009265C9 /* CuttingProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CuttingProfile.swift; sourceTree = "<group>"; };
 		1A7151D11FC5985F000A9C29 /* BaseTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTabBarController.swift; sourceTree = "<group>"; };
-		1A7151D31FC59E27000A9C29 /* ReportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		1A7151D51FC5BBF4000A9C29 /* AnalyzeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyzeViewController.swift; sourceTree = "<group>"; };
+		1ABEF7581FC6267900B0B00F /* CoreDataProfile.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataProfile.xcdatamodel; sourceTree = "<group>"; };
 		1AE821901D9DF455001B45B7 /* AudioRecorderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioRecorderViewController.swift; sourceTree = "<group>"; };
 		1AE821921D9DF495001B45B7 /* AudioManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		1AE821941D9DF831001B45B7 /* MainMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
+		1AEC16561FC9288900A04A7B /* SelectorButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectorButton.swift; sourceTree = "<group>"; };
 		EB15E49A1CB9A28D007B04C5 /* wavTones.com.unregistred.dualfreq_600Hz_-6dBFS_1200Hz_-18dBFS_5s.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "wavTones.com.unregistred.dualfreq_600Hz_-6dBFS_1200Hz_-18dBFS_5s.wav"; sourceTree = "<group>"; };
 		EB47CFA51CACD29700BA218E /* ChatterApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatterApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB47CFA91CACD29700BA218E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -109,6 +109,7 @@
 		EB47CF9C1CACD29700BA218E = {
 			isa = PBXGroup;
 			children = (
+				1ABEF7571FC6267900B0B00F /* CoreDataProfile.xcdatamodeld */,
 				EB47CFA71CACD29700BA218E /* ChatterApp */,
 				EB47CFBD1CACD29700BA218E /* ChatterAppTests */,
 				EB47CFA61CACD29700BA218E /* Products */,
@@ -127,13 +128,12 @@
 		EB47CFA71CACD29700BA218E /* ChatterApp */ = {
 			isa = PBXGroup;
 			children = (
-				1A6476EA1FC62118009265C9 /* CuttingProfile.swift */,
 				1A6476E11FC61A8D009265C9 /* ProfileTableViewCell.swift */,
 				1A505E8B1DC1A9A6003A1D3B /* Misc */,
 				1A505E8A1DC1A98A003A1D3B /* FFT Stuff */,
 				EB47CFAE1CACD29700BA218E /* Main.storyboard */,
+				1AEC16561FC9288900A04A7B /* SelectorButton.swift */,
 				1A7151D11FC5985F000A9C29 /* BaseTabBarController.swift */,
-				1A7151D31FC59E27000A9C29 /* ReportViewController.swift */,
 				1A6476DF1FC5F1B4009265C9 /* ReportTableTableViewController.swift */,
 				1A31670A1D755261002B1371 /* GraphView.swift */,
 				1A7151D51FC5BBF4000A9C29 /* AnalyzeViewController.swift */,
@@ -296,12 +296,12 @@
 				1A505E891DC1A7CA003A1D3B /* ChatterDetectorViewController.swift in Sources */,
 				1AE821931D9DF495001B45B7 /* AudioManager.swift in Sources */,
 				1AE821911D9DF455001B45B7 /* AudioRecorderViewController.swift in Sources */,
+				1AEC16571FC9288900A04A7B /* SelectorButton.swift in Sources */,
 				1A7151D61FC5BBF4000A9C29 /* AnalyzeViewController.swift in Sources */,
 				EB47CFD21CACD9D100BA218E /* ChatterDetector.swift in Sources */,
-				1A6476EB1FC62118009265C9 /* CuttingProfile.swift in Sources */,
 				1A7151D21FC5985F000A9C29 /* BaseTabBarController.swift in Sources */,
+				1ABEF7591FC6267900B0B00F /* CoreDataProfile.xcdatamodeld in Sources */,
 				1A6476E01FC5F1B4009265C9 /* ReportTableTableViewController.swift in Sources */,
-				1A7151D41FC59E27000A9C29 /* ReportViewController.swift in Sources */,
 				EB47CFAB1CACD29700BA218E /* AppDelegate.swift in Sources */,
 				EB47CFD01CACD5C600BA218E /* MatlabFFT.m in Sources */,
 			);
@@ -529,6 +529,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		1ABEF7571FC6267900B0B00F /* CoreDataProfile.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				1ABEF7581FC6267900B0B00F /* CoreDataProfile.xcdatamodel */,
+			);
+			currentVersion = 1ABEF7581FC6267900B0B00F /* CoreDataProfile.xcdatamodel */;
+			name = CoreDataProfile.xcdatamodeld;
+			path = ChatterApp/CoreDataProfile.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = EB47CF9D1CACD29700BA218E /* Project object */;
 }

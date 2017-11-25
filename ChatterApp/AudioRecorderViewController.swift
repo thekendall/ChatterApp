@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class AudioRecorderViewController: UIViewController, AudioManagerDelegate {
+class AudioRecorderViewController: UIViewController, AudioManagerDelegate{
     
     var audioManager = AudioManager()
     var timer:Timer? = nil;
@@ -28,11 +28,10 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate {
     fileprivate var profileName:String?;
     var profiles: [NSManagedObject] = []
 
+    //MARK: UI Recorder Elements
     @IBOutlet weak var timecode: UILabel!
-    
     @IBOutlet weak var savedProfileTableView: UITableView!
     @IBOutlet weak var AudioPlotter: GraphView!
-    
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var analyzeButton: UIButton!
@@ -49,23 +48,20 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate {
             AudioPlotter.x_min = 0
             AudioPlotter.x_max = recordLength;
             recordButton.setTitle("Stop", for: UIControlState())
-            timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(AudioRecorderViewController.updateDisplay), userInfo: nil, repeats: true)
+            timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(AudioRecorderViewController.updateDisplay), userInfo: nil, repeats: true) // timecode
             waveformIndex = AudioPlotter.addPlot([0], y_coors: [0], color: (0,0,255))
             recordingLine = AudioPlotter.addPlot([0,0], y_coors:[1,-1], color:(255,0,0))
-            //updateDisplay()
             hasRecording = false;
-            
         } else {
             audioDidFinishRecording()
         }
     }
     
-    @IBAction func save(_ sender: UIButton) {
+    @IBAction func analyze(_ sender: UIButton) {
         let profileNameFromTextBox = UUID().uuidString;
         audioFilePath = audioManager.saveAudio(profileNameFromTextBox) //path //test
         profileName = profileNameFromTextBox
         performSegue(withIdentifier: "ShowChatterDetector", sender: sender)
-
     }
     
     
@@ -96,14 +92,12 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate {
 //MARK: Standard ViewController Functions
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         self.title = "Recorder"
-        //audioManager.delegate = self;
-        //checkActivateSave()
-//        profileNameTextbox.addTarget(self, action: #selector(AudioRecorderViewController.profileNameDidEdit) , for: UIControlEvents.editingChanged)
         AudioPlotter.x_min = 0.0
-        // Do any additional setup after loading the view, typically from a nib.
+        self.saveProfile(name: "Hello")
+        savedProfileTableView.dataSource = self;
+        savedProfileTableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -112,15 +106,16 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
+        let managedContext = appDelegate.persistentContainer.viewContext
         
-//        let managedContext = appDelegate.persistentContainer.viewContext
-//        
-//        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "CuttingProfile")
-//        do {
-//            profiles = try managedContext.fetch(fetchRequest)
-//        } catch let error as NSError {
-//            print("Could not fetch. \(error), \(error.userInfo)")
-//        }
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "CuttingProfile")
+        
+        do {
+            profiles = try managedContext.fetch(fetchRequest)
+            print(profiles)
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -186,11 +181,6 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate {
         
         profile.setValue(name, forKeyPath: "profileName")
         
-//        //        newUser.setValue("Shashikant", forKey: "username")
-//        newUser.setValue("1234", forKey: "password")
-//        newUser.setValue("12", forKey: "age")
-
-        
         do {
             try managedContext.save()
             profiles.append(profile)
@@ -199,9 +189,6 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate {
         }
     }
     
-
-    
-
 }
 
 extension AudioRecorderViewController: UITableViewDataSource {
@@ -213,6 +200,7 @@ extension AudioRecorderViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("WHAT")
         let profile = profiles[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileCell", for: indexPath) as? ProfileTableViewCell;
         cell?.profileNameLabel.text = profile.value(forKeyPath: "profileName") as? String

@@ -69,7 +69,6 @@ class AnalyzeViewController: UIViewController {
             detector?.calculateFrequencies();
         }
         while(detector?.fftStatus == ChatterDetector.FFTSTATUS.calculating) {
-            print(detector?.fftStatus);
         }
 
         FFTPlot.clearAllPlots()
