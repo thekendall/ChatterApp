@@ -99,7 +99,6 @@ class AudioManager: NSObject, AVAudioRecorderDelegate {
         validPlaybackAudioFile = success
         let audioFilename = getTemporaryDirectory() + "/temp.aiff"
         loadAudioFile(audioFilename)
-        print("\(audioFilename)")
     }
     
     func getChannelPowerValue() -> Double

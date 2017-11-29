@@ -52,7 +52,8 @@ class AnalyzeViewController: UIViewController {
         waveformPlot.y_max = 1
         let scaleFactor = max(Int(ceil(Double((detector?.audioSampleData[0].count)!)/2000)),1) //discreet number of plot points
         let cutAudioData_y = stride(from: 1, to: (detector?.audioSampleData[0].count)!, by: scaleFactor).map {
-            Double((detector?.audioSampleData[0][$0])!)} //Skips every scaleFactor.
+            Double((detector?.audioSampleData[0][$0])!)
+        } //Skips every scaleFactor.
         let audioData_x = (0...cutAudioData_y.count - 1).map{Double($0)}
         let queue = DispatchQueue.global(qos: .userInteractive);
         audioPlotIndicator.startAnimating();
@@ -93,15 +94,5 @@ class AnalyzeViewController: UIViewController {
     }
 
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

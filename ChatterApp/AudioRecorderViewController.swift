@@ -18,7 +18,7 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate{
     var recording = false;
     var hasRecording = false {
         didSet {
-            checkActivateSave()
+            analyzeButton.isEnabled = hasRecording;
         }
     }
     var waveformIndex = 0;
@@ -40,8 +40,9 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate{
     @IBAction func record(_ sender: AnyObject) {
         if(!recording)
         {
-            AudioPlotter.clearAllPlots()
             recording = true;
+
+            AudioPlotter.clearAllPlots() //Reset
             audioManager.reset();
             audioManager.record(recordLength)
             AudioPlotter.autoscaleAxis = false
@@ -95,27 +96,16 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate{
         super.viewDidLoad()
         self.title = "Recorder"
         AudioPlotter.x_min = 0.0
-        self.saveProfile(name: "Hello")
         savedProfileTableView.dataSource = self;
         savedProfileTableView.reloadData()
+        analyzeButton.isEnabled = false;
+        analyzeButton.isHighlighted = true;
+        audioManager.delegate = self;
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
-        }
-        let managedContext = appDelegate.persistentContainer.viewContext
-        
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "CuttingProfile")
-        
-        do {
-            profiles = try managedContext.fetch(fetchRequest)
-            print(profiles)
-        } catch let error as NSError {
-            print("Could not fetch. \(error), \(error.userInfo)")
-        }
+        profiles = fetch()!;
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -134,21 +124,10 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate{
             if let destinationVC = ((segue.destination as? UITabBarController)?.childViewControllers[0] as? UINavigationController)?.topViewController as? ChatterDetectorViewController {
                 destinationVC.audioFilePath = audioFilePath;
                 destinationVC.profileName = profileName;
-                print("\(audioFilePath)")
-
             }
+        } else if segue.identifier == "LoadSavedChatterDetector" {
+            
         }
-    }
-    
-    
-    fileprivate func checkActivateSave()
-    {
-        if(hasRecording) {
-            analyzeButton.isEnabled = true;
-        } else {
-            analyzeButton.isEnabled = false;
-        }
-
     }
     
     
@@ -165,29 +144,28 @@ class AudioRecorderViewController: UIViewController, AudioManagerDelegate{
         audioManager.stopRecording()
         recordButton.setTitle("Record", for: UIControlState())
         hasRecording = true;
+        print("AUDIO DID FINISH RECORDING");
     }
     
-    func saveProfile(name: String) {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
+    //MARK: Core Data
+    func fetch() -> [CuttingProfile]? {
+        guard let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate else {
+                return []
         }
         
-        let managedContext = appDelegate.persistentContainer.viewContext
-        
-        let entity = NSEntityDescription.entity(forEntityName: "CuttingProfile",
-                                                in: managedContext)!
-        let profile = NSManagedObject(entity: entity,
-                                     insertInto: managedContext) //NewProfile
-        
-        profile.setValue(name, forKeyPath: "profileName")
+        let moc = appDelegate.persistentContainer.viewContext
+
+        let cuttingProfileFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "CuttingProfile")
         
         do {
-            try managedContext.save()
-            profiles.append(profile)
-        } catch let error as NSError {
-            print("Could not save. \(error), \(error.userInfo)")
+            let fetchedCuttingProfile = try moc.fetch(cuttingProfileFetch) as! [CuttingProfile]
+            return fetchedCuttingProfile;            
+        } catch {
+            fatalError("Failed to fetch cutting profiles: \(error)")
         }
     }
+
     
 }
 
@@ -200,7 +178,6 @@ extension AudioRecorderViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("WHAT")
         let profile = profiles[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileCell", for: indexPath) as? ProfileTableViewCell;
         cell?.profileNameLabel.text = profile.value(forKeyPath: "profileName") as? String
